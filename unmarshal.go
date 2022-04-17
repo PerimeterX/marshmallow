@@ -10,6 +10,20 @@ import (
 	"reflect"
 )
 
+// Unmarshal parses the JSON-encoded object in data and stores the values
+// in the struct pointed to by v and in the returned map.
+// If v is nil or not a pointer to a struct, Unmarshal returns an ErrInvalidValue.
+// If data is not a valid JSON or not a JSON object Unmarshal returns an ErrInvalidInput.
+//
+// Unmarshal follows the rules of json.Unmarshal with the following exceptions:
+// - All input fields are stored in the resulting map, including fields that do not exist in the
+// struct pointed by v.
+// - Unmarshal only operates on JSON object inputs. It will reject all other types of input
+// by returning ErrInvalidInput.
+// - Unmarshal only operates on struct values. It will reject all other types of v by
+// returning ErrInvalidValue.
+// - Unmarshal supports three types of Mode values. Each mode is self documented and affects
+// how Unmarshal behaves.
 func Unmarshal(data []byte, v interface{}, options ...UnmarshalOption) (map[string]interface{}, error) {
 	if !isValidValue(v) {
 		return nil, ErrInvalidValue
@@ -46,7 +60,11 @@ type decoder struct {
 }
 
 func (d *decoder) populateStruct(structInstance interface{}, result map[string]interface{}) (interface{}, bool) {
-	structValue := reflectStructValue(structInstance)
+	doPopulate := !d.options.skipPopulateStruct || result == nil
+	var structValue reflect.Value
+	if doPopulate {
+		structValue = reflectStructValue(structInstance)
+	}
 	fields := mapStructFields(structInstance)
 	var clone map[string]interface{}
 	if d.options.mode == ModeFailOverToOriginalValue {
@@ -56,12 +74,14 @@ func (d *decoder) populateStruct(structInstance interface{}, result map[string]i
 	for !d.lexer.IsDelim('}') {
 		key := d.lexer.UnsafeFieldName(false)
 		d.lexer.WantColon()
-		fieldIdx, exists := fields[key]
+		refInfo, exists := fields[key]
 		if exists {
-			field := structValue.Field(fieldIdx)
-			value, isValidType := d.valueByReflectType(field.Type(), false)
+			value, isValidType := d.valueByReflectType(refInfo.t, false)
 			if isValidType {
-				assignValue(field, value)
+				if doPopulate {
+					field := structValue.Field(refInfo.i)
+					assignValue(field, value)
+				}
 				if result != nil {
 					result[key] = value
 				} else if clone != nil {

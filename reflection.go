@@ -12,14 +12,19 @@ import (
 
 var unmarshalerType = reflect.TypeOf((*json.Unmarshaler)(nil)).Elem()
 
-func mapStructFields(target interface{}) map[string]int {
+type reflectionInfo struct {
+	i int
+	t reflect.Type
+}
+
+func mapStructFields(target interface{}) map[string]reflectionInfo {
 	t := reflectStructType(target)
 	result := cacheLookup(t)
 	if result != nil {
 		return result
 	}
 	num := t.NumField()
-	result = make(map[string]int, num)
+	result = make(map[string]reflectionInfo, num)
 	for i := 0; i < num; i++ {
 		field := t.Field(i)
 		name := field.Tag.Get("json")
@@ -29,7 +34,10 @@ func mapStructFields(target interface{}) map[string]int {
 		if index := strings.Index(name, ","); index > -1 {
 			name = name[:index]
 		}
-		result[name] = i
+		result[name] = reflectionInfo{
+			i: i,
+			t: field.Type,
+		}
 	}
 	cacheStore(t, result)
 	return result

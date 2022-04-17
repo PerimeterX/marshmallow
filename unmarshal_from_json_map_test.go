@@ -2123,8 +2123,8 @@ func TestUnmarshalFromJSONMapInputVariations(t *testing.T) {
 					expectedMap[k] = v
 				}
 				structValue := reflectStructValue(actualStruct)
-				for name, fieldIdx := range mapStructFields(actualStruct) {
-					field := structValue.Field(fieldIdx)
+				for name, info := range mapStructFields(actualStruct) {
+					field := structValue.Field(info.i)
 					expectedMap[name] = field.Interface()
 				}
 				if tt.expectedMapModifier != nil {

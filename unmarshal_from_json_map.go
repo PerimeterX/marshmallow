@@ -8,10 +8,32 @@ import (
 	"reflect"
 )
 
+// UnmarshalerFromJSONMap is the interface implemented by types
+// that can unmarshal a JSON description of themselves.
+// In case you want to implement custom unmarshalling, json.Unmarshaler only supports
+// receiving the data as []byte. However, while unmarshalling from JSON map,
+// the data is not available as a raw []byte and converting to it will significantly
+// hurt performance. Thus, if you wish to implement a custom unmarshalling on a type
+// that is being unmarshalled from a JSON map, you need to implement
+// UnmarshalerFromJSONMap interface.
 type UnmarshalerFromJSONMap interface {
 	UnmarshalJSONFromMap(data interface{}) error
 }
 
+// UnmarshalFromJSONMap parses the JSON map data and stores the values
+// in the struct pointed to by v and in the returned map.
+// If v is nil or not a pointer to a struct, UnmarshalFromJSONMap returns an ErrInvalidValue.
+//
+// UnmarshalFromJSONMap follows the rules of json.Unmarshal with the following exceptions:
+// - All input fields are stored in the resulting map, including fields that do not exist in the
+// struct pointed by v.
+// - UnmarshalFromJSONMap receive a JSON map instead of raw bytes. The given input map is assumed
+// to be a JSON map, meaning it should only contain the following types: bool, string, float64,
+// []interface, and map[string]interface{}. Other types will cause decoding to return unexpected results.
+// - UnmarshalFromJSONMap only operates on struct values. It will reject all other types of v by
+// returning ErrInvalidValue.
+// - UnmarshalFromJSONMap supports three types of Mode values. Each mode is self documented and affects
+// how UnmarshalFromJSONMap behaves.
 func UnmarshalFromJSONMap(data map[string]interface{}, v interface{}, options ...UnmarshalOption) (map[string]interface{}, error) {
 	if !isValidValue(v) {
 		return nil, ErrInvalidValue
@@ -43,15 +65,21 @@ type mapDecoder struct {
 }
 
 func (m *mapDecoder) populateStruct(path []string, data map[string]interface{}, structInstance interface{}, result map[string]interface{}) (interface{}, bool) {
-	structValue := reflectStructValue(structInstance)
+	doPopulate := !m.options.skipPopulateStruct || result == nil
+	var structValue reflect.Value
+	if doPopulate {
+		structValue = reflectStructValue(structInstance)
+	}
 	fields := mapStructFields(structInstance)
 	for key, inputValue := range data {
-		fieldIdx, exists := fields[key]
+		refInfo, exists := fields[key]
 		if exists {
-			field := structValue.Field(fieldIdx)
-			value, isValidType := m.valueByReflectType(append(path, key), inputValue, field.Type(), false)
+			value, isValidType := m.valueByReflectType(append(path, key), inputValue, refInfo.t, false)
 			if isValidType {
-				assignValue(field, value)
+				if doPopulate {
+					field := structValue.Field(refInfo.i)
+					assignValue(field, value)
+				}
 				if result != nil {
 					result[key] = value
 				}
