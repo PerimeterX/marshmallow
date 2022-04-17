@@ -28,7 +28,7 @@ type Cache interface {
 //
 // Caching is disabled by default. The use of this function allows enabling it and controlling the
 // behavior of the cache. Typically, the use of sync.Map should be good enough. The caching mechanism
-// stores a single map[string]int per struct type. If you plan to unmarshal a huge amount of distinct
+// stores a single map per struct type. If you plan to unmarshal a huge amount of distinct
 // struct it may get to consume a lot of resources, in which case you have the control to choose
 // the caching implementation you like and its setup.
 func EnableCache(c Cache) {

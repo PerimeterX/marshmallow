@@ -17,8 +17,7 @@ import (
 //
 // Unmarshal follows the rules of json.Unmarshal with the following exceptions:
 // - All input fields are stored in the resulting map, including fields that do not exist in the
-// struct pointed by v. This allows both to retain all the original input data fields and to access
-// them via a map key lookup.
+// struct pointed by v.
 // - Unmarshal only operates on JSON object inputs. It will reject all other types of input
 // by returning ErrInvalidInput.
 // - Unmarshal only operates on struct values. It will reject all other types of v by

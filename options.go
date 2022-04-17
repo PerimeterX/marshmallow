@@ -21,7 +21,7 @@ const (
 	// ModeFailOverToOriginalValue mode makes unmarshalling keep decoding even if
 	// errors are encountered. In case of such error, the original external value be placed in the
 	// result data, even though it does not meet the schematic requirements.
-	// Eventually, all errors will all be returned, alongside the full result. Note that the result map
+	// Eventually, all errors will be returned, alongside the full result. Note that the result map
 	// will contain values that do not match the struct schema.
 	ModeFailOverToOriginalValue
 )
@@ -37,8 +37,7 @@ func WithMode(mode Mode) UnmarshalOption {
 // Skipping populate struct is set to false by default.
 // If you do not intend to use the struct value once unmarshalling is finished, set this
 // option to true to boost performance. This would mean the struct fields will not be set
-// with values, but rather it will only be used as the target schema to be used when
-// populating the result map.
+// with values, but rather it will only be used as the target schema when populating the result map.
 func WithSkipPopulateStruct(skipPopulateStruct bool) UnmarshalOption {
 	return func(options *unmarshalOptions) {
 		options.skipPopulateStruct = skipPopulateStruct

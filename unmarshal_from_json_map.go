@@ -10,8 +10,12 @@ import (
 
 // UnmarshalerFromJSONMap is the interface implemented by types
 // that can unmarshal a JSON description of themselves.
-// UnmarshalerFromJSONMap should use the value in data to perform the
-// unmarshalling from map.
+// In case you want to implement custom unmarshalling, json.Unmarshaler only supports
+// receiving the data as []byte. However, while unmarshalling from JSON map,
+// the data is not available as a raw []byte and converting to it will significantly
+// hurt performance. Thus, if you wish to implement a custom unmarshalling on a type
+// that is being unmarshalled from a JSON map, you need to implement
+// UnmarshalerFromJSONMap interface.
 type UnmarshalerFromJSONMap interface {
 	UnmarshalJSONFromMap(data interface{}) error
 }
@@ -22,8 +26,7 @@ type UnmarshalerFromJSONMap interface {
 //
 // UnmarshalFromJSONMap follows the rules of json.Unmarshal with the following exceptions:
 // - All input fields are stored in the resulting map, including fields that do not exist in the
-// struct pointed by v. This allows both to retain all the original input data fields and to access
-// them via a map key lookup.
+// struct pointed by v.
 // - UnmarshalFromJSONMap receive a JSON map instead of raw bytes. The given input map is assumed
 // to be a JSON map, meaning it should only contain the following types: bool, string, float64,
 // []interface, and map[string]interface{}. Other types will cause decoding to return unexpected results.
