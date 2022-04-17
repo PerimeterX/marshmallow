@@ -33,7 +33,7 @@ import (
 )
 
 func main() {
-	marshmallow.EnableCache(&sync.Map{})
+	marshmallow.EnableCache(&sync.Map{}) // this is used to boost performance, read more below
 	v := struct {
 		Foo string `json:"foo"`
 		Boo []int  `json:"boo"`
@@ -129,29 +129,23 @@ the data - this includes iterating it, reading calculated or configured field na
 
 Other solutions available for this kind of use case, each solution is explained and documented in the link below.
 
-|Benchmark|(1)|(2)|(3)|(4)| |--|--|--|--|--|
-|[unmarshall twice](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L40)|228693|5164
-ns/op|1640 B/op|51 allocs/op|
-|[raw map](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L66)|232236|5116
-ns/op|2296 B/op|53 allocs/op|
-|[go codec](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L121)|388442|3077
-ns/op|2512 B/op|37 allocs/op|
-|[marshmallow](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L16)|626168|1853
-ns/op|608 B/op|18 allocs/op|
-|[marshmallow without populating struct](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L162)|678616|1751
-ns/op|608 B/op|18 allocs/op|
+|Benchmark|(1)|(2)|(3)|(4)|
+|--|--|--|--|--|
+|[unmarshall twice](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L40)|228693|5164 ns/op|1640 B/op|51 allocs/op|
+|[raw map](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L66)|232236|5116 ns/op|2296 B/op|53 allocs/op|
+|[go codec](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L121)|388442|3077 ns/op|2512 B/op|37 allocs/op|
+|[marshmallow](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L16)|626168|1853 ns/op|608 B/op|18 allocs/op|
+|[marshmallow without populating struct](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L162)|678616|1751 ns/op|608 B/op|18 allocs/op|
 
 **Marshmallow provides the best performance (up to X3 faster) while not requiring any extra coding.**
 In fact, marshmallow performs as fast as normal `json.Unmarshal` call, however, it populates both the map and the
 struct.
 
-|Benchmark|(1)|(2)|(3)|(4)| |--|--|--|--|--|
-|[marshmallow](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L16)|626168|1853
-ns/op|608 B/op|18 allocs/op|
-|[native library](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L143)|652106|1845
-ns/op|304 B/op|11 allocs/op|
-|[marshmallow without populating struct](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L162)|678616|1751
-ns/op|608 B/op|18 allocs/op|
+|Benchmark|(1)|(2)|(3)|(4)|
+|--|--|--|--|--|
+|[marshmallow](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L16)|626168|1853 ns/op|608 B/op|18 allocs/op|
+|[native library](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L143)|652106|1845 ns/op|304 B/op|11 allocs/op|
+|[marshmallow without populating struct](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L162)|678616|1751 ns/op|608 B/op|18 allocs/op|
 
 ## API
 
@@ -184,7 +178,7 @@ UnmarshalFromJSONMap follows the rules of json.Unmarshal with the following exce
 - All input fields are stored in the resulting map, including fields that do not exist in the struct pointed by v.
 - UnmarshalFromJSONMap receive a JSON map instead of raw bytes. The given input map is assumed to be a JSON map, meaning
   it should only contain the following types: `bool`, `string`, `float64`, `[]interface`, and `map[string]interface{}`.
-Other types will cause decoding to return unexpected results.
+  Other types will cause decoding to return unexpected results.
 - UnmarshalFromJSONMap only operates on struct values. It will reject all other types of v by returning ErrInvalidValue.
 - UnmarshalFromJSONMap supports three types of Mode values. Each mode is documented below.
 
@@ -224,4 +218,3 @@ Caching is disabled by default. The use of this function allows enabling it and 
 Typically, the use of `sync.Map` should be good enough. The caching mechanism stores a single `map` per struct type. If
 you plan to unmarshal a huge amount of distinct struct it may get to consume a lot of resources, in which case you have
 the control to choose the caching implementation you like and its setup.
-
