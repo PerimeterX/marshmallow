@@ -61,7 +61,11 @@ type decoder struct {
 }
 
 func (d *decoder) populateStruct(structInstance interface{}, result map[string]interface{}) (interface{}, bool) {
-	structValue := reflectStructValue(structInstance)
+	doPopulate := !d.options.skipPopulateStruct || result == nil
+	var structValue reflect.Value
+	if doPopulate {
+		structValue = reflectStructValue(structInstance)
+	}
 	fields := mapStructFields(structInstance)
 	var clone map[string]interface{}
 	if d.options.mode == ModeFailOverToOriginalValue {
@@ -71,12 +75,12 @@ func (d *decoder) populateStruct(structInstance interface{}, result map[string]i
 	for !d.lexer.IsDelim('}') {
 		key := d.lexer.UnsafeFieldName(false)
 		d.lexer.WantColon()
-		fieldIdx, exists := fields[key]
+		refInfo, exists := fields[key]
 		if exists {
-			field := structValue.Field(fieldIdx)
-			value, isValidType := d.valueByReflectType(field.Type(), false)
+			value, isValidType := d.valueByReflectType(refInfo.t, false)
 			if isValidType {
-				if !d.options.skipPopulateStruct || result == nil {
+				if doPopulate {
+					field := structValue.Field(refInfo.i)
 					assignValue(field, value)
 				}
 				if result != nil {

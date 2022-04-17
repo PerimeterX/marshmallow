@@ -11,6 +11,8 @@ import (
 	"testing"
 )
 
+// Unmarshal using marshmallow.
+// This will not require any explicit coding and provide the best performance.
 func BenchmarkMarshmallow(b *testing.B) {
 	EnableCache(&sync.Map{})
 	var v benchmarkParent
@@ -30,6 +32,11 @@ func BenchmarkMarshmallow(b *testing.B) {
 	validateBenchmarkTypedMap(b, result)
 }
 
+// Unmarshal twice - once into a struct and a second time into a map.
+// This is fully native and requires no external dependencies.
+// However, it obviously has huge implications over performance.
+// This approach will be useful in case performance does not matter,
+// and you do not wish to import any external dependencies.
 func BenchmarkUnmarshalTwice(b *testing.B) {
 	var v benchmarkParent
 	var result map[string]interface{}
@@ -53,6 +60,9 @@ func BenchmarkUnmarshalTwice(b *testing.B) {
 	validateBenchmarkUntypedMap(b, result)
 }
 
+// Unmarshal into a raw map - and then populate the struct manually or using reflection.
+// This method will be useful if you are willing to write more code to boost performance
+// just by a bit and still avoid using external dependencies.
 func BenchmarkUnmarshalRawMap(b *testing.B) {
 	var v benchmarkParent
 	var result map[string]interface{}
@@ -105,6 +115,9 @@ func BenchmarkUnmarshalRawMap(b *testing.B) {
 	validateBenchmarkTypedMap(b, result)
 }
 
+// Use go/codec or other libraries.
+// This will boost performance a bit more but require explicit coding to hook struct fields
+// into the map.
 func BenchmarkGoCodec(b *testing.B) {
 	var v benchmarkParent
 	var result map[string]interface{}
@@ -125,6 +138,8 @@ func BenchmarkGoCodec(b *testing.B) {
 	validateBenchmarkStruct(b, &v)
 }
 
+// Unmarshal using native JSON library. This will not provide any of map data at all.
+// This is benchmarked here merely to get a general comparison of marshmallow runtime and performance.
 func BenchmarkJSON(b *testing.B) {
 	b.ResetTimer()
 	var v benchmarkParent
@@ -140,6 +155,10 @@ func BenchmarkJSON(b *testing.B) {
 	validateBenchmarkStruct(b, &v)
 }
 
+// Unmarshal using marshmallow and skip populating struct.
+// This is useful when you are only interested in populating typed fields into the map,
+// but not interested in the resulting struct.
+// This will further boost performance.
 func BenchmarkMarshmallowWithSkipPopulateStruct(b *testing.B) {
 	EnableCache(&sync.Map{})
 	var v benchmarkParent

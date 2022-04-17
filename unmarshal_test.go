@@ -2132,8 +2132,8 @@ func TestUnmarshalInputVariations(t *testing.T) {
 					expectedMap[k] = v
 				}
 				structValue := reflectStructValue(actualStruct)
-				for name, fieldIdx := range mapStructFields(actualStruct) {
-					field := structValue.Field(fieldIdx)
+				for name, refInfo := range mapStructFields(actualStruct) {
+					field := structValue.Field(refInfo.i)
 					expectedMap[name] = field.Interface()
 				}
 				if tt.expectedMapModifier != nil {

@@ -62,15 +62,19 @@ type mapDecoder struct {
 }
 
 func (m *mapDecoder) populateStruct(path []string, data map[string]interface{}, structInstance interface{}, result map[string]interface{}) (interface{}, bool) {
-	structValue := reflectStructValue(structInstance)
+	doPopulate := !m.options.skipPopulateStruct || result == nil
+	var structValue reflect.Value
+	if doPopulate {
+		structValue = reflectStructValue(structInstance)
+	}
 	fields := mapStructFields(structInstance)
 	for key, inputValue := range data {
-		fieldIdx, exists := fields[key]
+		refInfo, exists := fields[key]
 		if exists {
-			field := structValue.Field(fieldIdx)
-			value, isValidType := m.valueByReflectType(append(path, key), inputValue, field.Type(), false)
+			value, isValidType := m.valueByReflectType(append(path, key), inputValue, refInfo.t, false)
 			if isValidType {
-				if !m.options.skipPopulateStruct || result == nil {
+				if doPopulate {
+					field := structValue.Field(refInfo.i)
 					assignValue(field, value)
 				}
 				if result != nil {

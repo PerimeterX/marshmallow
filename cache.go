@@ -37,7 +37,7 @@ func EnableCache(c Cache) {
 
 var cache Cache
 
-func cacheLookup(t reflect.Type) map[string]int {
+func cacheLookup(t reflect.Type) map[string]reflectionInfo {
 	if cache == nil {
 		return nil
 	}
@@ -45,11 +45,11 @@ func cacheLookup(t reflect.Type) map[string]int {
 	if !exists {
 		return nil
 	}
-	result, _ := value.(map[string]int)
+	result, _ := value.(map[string]reflectionInfo)
 	return result
 }
 
-func cacheStore(t reflect.Type, fields map[string]int) {
+func cacheStore(t reflect.Type, fields map[string]reflectionInfo) {
 	if cache == nil {
 		return
 	}

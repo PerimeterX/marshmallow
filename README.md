@@ -31,7 +31,7 @@ func main() {
 }
 ```
 
-#### Where does marshmallow shine
+#### Where Does Marshmallow Shine
 Marshmallow is best suited for use cases where you are interested in all the input data,
 but you have predetermined information only about a subset of it.
 For instance, if you plan to reference two specific fields from the data,
@@ -110,21 +110,21 @@ want to lose any of it. Second is where you plan to perform any kind of dynamic
 read of the data - this includes iterating it, reading calculated or configured
 field names, and others.
 
-## Alternatives
-Other solution available for this kind of use case:
-- Unmarshal twice: once into a struct and a second time into a map. This is fully
-native and requires no external dependencies. However, it obviously has huge implications
-over performance. This approach will be useful in case performance does not matter,
-and you do not wish to import any external dependencies.
-- Unmarshal into a raw map and then - [example](https://stackoverflow.com/a/33499066/1932186).
-This method will be useful if you are willing to write more code to boost performance
-just by a bit and still avoid using external dependencies.
-- Use `go/codec` or other libraries - [example](https://stackoverflow.com/a/33499861/1932186).
-This will boost a bit more performance but require explicit coding to hook struct fields 
-into the map.
+## Alternatives and Performance Benchmark
+[Full Benchmark](benchmark_test.go)
 
-## Performance
+Other solutions available for this kind of use case, each solution is explained
+and documented in the link below.
 
+|Benchmark|(1)|(2)|(3)|(4)|
+|--|--|--|--|--|
+|[unmarshall twice](https://github.com/PerimeterX/marshmallow/blob/d165df95a46f197a3db895a542333ae971d9a330/benchmark_test.go#L33)|228693|5164 ns/op|1640 B/op|51 allocs/op|
+|[raw map](https://github.com/PerimeterX/marshmallow/blob/d165df95a46f197a3db895a542333ae971d9a330/benchmark_test.go#L33)|232236|5116 ns/op|2296 B/op|53 allocs/op|
+|[go codec](https://github.com/PerimeterX/marshmallow/blob/d165df95a46f197a3db895a542333ae971d9a330/benchmark_test.go#L33)|388442|3077 ns/op|2512 B/op|37 allocs/op|
+|[marshmallow](https://github.com/PerimeterX/marshmallow/blob/d165df95a46f197a3db895a542333ae971d9a330/benchmark_test.go#L33)|626168|1853 ns/op|608 B/op|18 allocs/op|
+|[marshmallow without populating struct](https://github.com/PerimeterX/marshmallow/blob/d165df95a46f197a3db895a542333ae971d9a330/benchmark_test.go#L33)|678616|1751 ns/op|608 B/op|18 allocs/op|
+
+**Marshmallow provides the best performance (up to X3 faster) while not requiring any extra coding.** 
 
 ## API
 API, options and cache
