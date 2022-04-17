@@ -111,21 +111,25 @@ read of the data - this includes iterating it, reading calculated or configured
 field names, and others.
 
 ## Alternatives and Performance Benchmark
-[Full Benchmark](benchmark_test.go)
+[Full Benchmark](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go)
 
 Other solutions available for this kind of use case, each solution is explained
 and documented in the link below.
 
 |Benchmark|(1)|(2)|(3)|(4)|
 |--|--|--|--|--|
-|[unmarshall twice](https://github.com/PerimeterX/marshmallow/blob/d165df95a46f197a3db895a542333ae971d9a330/benchmark_test.go#L33)|228693|5164 ns/op|1640 B/op|51 allocs/op|
-|[raw map](https://github.com/PerimeterX/marshmallow/blob/d165df95a46f197a3db895a542333ae971d9a330/benchmark_test.go#L33)|232236|5116 ns/op|2296 B/op|53 allocs/op|
-|[go codec](https://github.com/PerimeterX/marshmallow/blob/d165df95a46f197a3db895a542333ae971d9a330/benchmark_test.go#L33)|388442|3077 ns/op|2512 B/op|37 allocs/op|
-|[marshmallow](https://github.com/PerimeterX/marshmallow/blob/d165df95a46f197a3db895a542333ae971d9a330/benchmark_test.go#L33)|626168|1853 ns/op|608 B/op|18 allocs/op|
-|[marshmallow without populating struct](https://github.com/PerimeterX/marshmallow/blob/d165df95a46f197a3db895a542333ae971d9a330/benchmark_test.go#L33)|678616|1751 ns/op|608 B/op|18 allocs/op|
+|[unmarshall twice](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L40)|228693|5164 ns/op|1640 B/op|51 allocs/op|
+|[raw map](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L66)|232236|5116 ns/op|2296 B/op|53 allocs/op|
+|[go codec](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L121)|388442|3077 ns/op|2512 B/op|37 allocs/op|
+|[marshmallow](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L16)|626168|1853 ns/op|608 B/op|18 allocs/op|
+|[marshmallow without populating struct](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L162)|678616|1751 ns/op|608 B/op|18 allocs/op|
 
-**Marshmallow provides the best performance (up to X3 faster) while not requiring any extra coding.** 
+add line chart
+
+**Marshmallow provides the best performance (up to X3 faster) while not requiring any extra coding.**
+In fact, marshmallow performs as fast as normal `json.Unmarshal` call, however, it populates both the map and the struct.
+
+add comparison table
 
 ## API
-API, options and cache
-
+document API functions, options and cache
