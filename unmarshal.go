@@ -10,6 +10,21 @@ import (
 	"reflect"
 )
 
+// Unmarshal parses the JSON-encoded object in data and stores the values
+// in the struct pointed to by v and in the returned map.
+// If v is nil or not a pointer to a struct, Unmarshal returns an ErrInvalidValue.
+// If data is not a valid JSON or not a JSON object Unmarshal returns an ErrInvalidInput.
+//
+// Unmarshal follows the rules of json.Unmarshal with the following exceptions:
+// - All input fields are stored in the resulting map, including fields that do not exist in the
+// struct pointed by v. This allows both to retain all the original input data fields and to access
+// them via a map key lookup.
+// - Unmarshal only operates on JSON object inputs. It will reject all other types of input
+// by returning ErrInvalidInput.
+// - Unmarshal only operates on struct values. It will reject all other types of v by
+// returning ErrInvalidValue.
+// - Unmarshal supports three types of Mode values. Each mode is self documented and affects
+// how Unmarshal behaves.
 func Unmarshal(data []byte, v interface{}, options ...UnmarshalOption) (map[string]interface{}, error) {
 	if !isValidValue(v) {
 		return nil, ErrInvalidValue
@@ -61,7 +76,9 @@ func (d *decoder) populateStruct(structInstance interface{}, result map[string]i
 			field := structValue.Field(fieldIdx)
 			value, isValidType := d.valueByReflectType(field.Type(), false)
 			if isValidType {
-				assignValue(field, value)
+				if !d.options.skipPopulateStruct || result == nil {
+					assignValue(field, value)
+				}
 				if result != nil {
 					result[key] = value
 				} else if clone != nil {

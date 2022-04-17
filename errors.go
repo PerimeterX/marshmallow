@@ -13,10 +13,14 @@ import (
 )
 
 var (
-	ErrInvalidInput = errors.New("unexpected non object JSON")
+	// ErrInvalidInput indicates the input JSON is invalid
+	ErrInvalidInput = errors.New("invalid JSON input")
+
+	// ErrInvalidValue indicates the target struct has invalid type
 	ErrInvalidValue = errors.New("unexpected non struct value")
 )
 
+// MultipleLexerError indicates one or more unmarshalling errors during JSON bytes decode
 type MultipleLexerError struct {
 	Errors []*jlexer.LexerError
 }
@@ -29,6 +33,7 @@ func (m *MultipleLexerError) Error() string {
 	return strings.Join(errs, ", ")
 }
 
+// MultipleError indicates one or more unmarshalling errors during JSON map decode
 type MultipleError struct {
 	Errors []error
 }
@@ -41,9 +46,14 @@ func (m *MultipleError) Error() string {
 	return strings.Join(errs, ", ")
 }
 
+// ParseError indicates a JSON map decode error
 type ParseError struct {
 	Reason string
 	Path   string
+}
+
+func (p *ParseError) Error() string {
+	return fmt.Sprintf("parse error: %s in %s", p.Reason, p.Path)
 }
 
 func newUnexpectedTypeParseError(expectedType reflect.Type, path []string) *ParseError {
@@ -58,10 +68,6 @@ func newUnsupportedTypeParseError(unsupportedType reflect.Type, path []string) *
 		Reason: fmt.Sprintf("unsupported type %s", externalTypeName(unsupportedType)),
 		Path:   strings.Join(path, "."),
 	}
-}
-
-func (p *ParseError) Error() string {
-	return fmt.Sprintf("parse error: %s in %s", p.Reason, p.Path)
 }
 
 func addUnexpectedTypeLexerError(lexer *jlexer.Lexer, expectedType reflect.Type) {

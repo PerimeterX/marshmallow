@@ -8,10 +8,29 @@ import (
 	"reflect"
 )
 
+// UnmarshalerFromJSONMap is the interface implemented by types
+// that can unmarshal a JSON description of themselves.
+// UnmarshalerFromJSONMap should use the value in data to perform the
+// unmarshalling from map.
 type UnmarshalerFromJSONMap interface {
 	UnmarshalJSONFromMap(data interface{}) error
 }
 
+// UnmarshalFromJSONMap parses the JSON map data and stores the values
+// in the struct pointed to by v and in the returned map.
+// If v is nil or not a pointer to a struct, UnmarshalFromJSONMap returns an ErrInvalidValue.
+//
+// UnmarshalFromJSONMap follows the rules of json.Unmarshal with the following exceptions:
+// - All input fields are stored in the resulting map, including fields that do not exist in the
+// struct pointed by v. This allows both to retain all the original input data fields and to access
+// them via a map key lookup.
+// - UnmarshalFromJSONMap receive a JSON map instead of raw bytes. The given input map is assumed
+// to be a JSON map, meaning it should only contain the following types: bool, string, float64,
+// []interface, and map[string]interface{}. Other types will cause decoding to return unexpected results.
+// - UnmarshalFromJSONMap only operates on struct values. It will reject all other types of v by
+// returning ErrInvalidValue.
+// - UnmarshalFromJSONMap supports three types of Mode values. Each mode is self documented and affects
+// how UnmarshalFromJSONMap behaves.
 func UnmarshalFromJSONMap(data map[string]interface{}, v interface{}, options ...UnmarshalOption) (map[string]interface{}, error) {
 	if !isValidValue(v) {
 		return nil, ErrInvalidValue
@@ -51,7 +70,9 @@ func (m *mapDecoder) populateStruct(path []string, data map[string]interface{}, 
 			field := structValue.Field(fieldIdx)
 			value, isValidType := m.valueByReflectType(append(path, key), inputValue, field.Type(), false)
 			if isValidType {
-				assignValue(field, value)
+				if !m.options.skipPopulateStruct || result == nil {
+					assignValue(field, value)
+				}
 				if result != nil {
 					result[key] = value
 				}
