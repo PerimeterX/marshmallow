@@ -12,12 +12,11 @@ import (
 	"github.com/mailru/easyjson/jlexer"
 	"reflect"
 	"strings"
-	"sync"
 	"testing"
 )
 
 func TestUnmarshalInputVariations(t *testing.T) {
-	EnableCache(&sync.Map{})
+	EnableCache()
 	tests := []struct {
 		name                string
 		mode                Mode

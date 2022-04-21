@@ -78,7 +78,7 @@ func (d *decoder) populateStruct(structInstance interface{}, result map[string]i
 		if exists {
 			value, isValidType := d.valueByReflectType(refInfo.t, false)
 			if isValidType {
-				if doPopulate {
+				if value != nil && doPopulate {
 					field := structValue.Field(refInfo.i)
 					assignValue(field, value)
 				}
@@ -128,10 +128,7 @@ func (d *decoder) valueByReflectType(t reflect.Type, isPtr bool) (interface{}, b
 	if converter := primitiveConverters[kind]; converter != nil {
 		v := d.lexer.Interface()
 		if v == nil {
-			if isPtr || kind == reflect.Interface {
-				return v, true
-			}
-			return reflect.Zero(t).Interface(), true
+			return nil, true
 		}
 		converted, ok := converter(v)
 		if !ok {
