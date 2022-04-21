@@ -76,7 +76,7 @@ func (m *mapDecoder) populateStruct(path []string, data map[string]interface{}, 
 		if exists {
 			value, isValidType := m.valueByReflectType(append(path, key), inputValue, refInfo.t, false)
 			if isValidType {
-				if doPopulate {
+				if value != nil && doPopulate {
 					field := structValue.Field(refInfo.i)
 					assignValue(field, value)
 				}
@@ -118,10 +118,7 @@ func (m *mapDecoder) valueByReflectType(path []string, v interface{}, t reflect.
 	kind := t.Kind()
 	if converter := primitiveConverters[kind]; converter != nil {
 		if v == nil {
-			if isPtr || kind == reflect.Interface {
-				return v, true
-			}
-			return reflect.Zero(t).Interface(), true
+			return nil, true
 		}
 		converted, ok := converter(v)
 		if !ok {

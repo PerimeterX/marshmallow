@@ -7,14 +7,13 @@ package marshmallow
 import (
 	"encoding/json"
 	"github.com/ugorji/go/codec"
-	"sync"
 	"testing"
 )
 
 // Unmarshal using marshmallow.
 // This will not require any explicit coding and provide the best performance.
 func BenchmarkMarshmallow(b *testing.B) {
-	EnableCache(&sync.Map{})
+	EnableCache()
 	var v benchmarkParent
 	var result map[string]interface{}
 	var err error
@@ -160,7 +159,7 @@ func BenchmarkJSON(b *testing.B) {
 // but not interested in the resulting struct.
 // This will further boost performance.
 func BenchmarkMarshmallowWithSkipPopulateStruct(b *testing.B) {
-	EnableCache(&sync.Map{})
+	EnableCache()
 	var v benchmarkParent
 	var result map[string]interface{}
 	var err error

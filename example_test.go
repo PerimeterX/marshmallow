@@ -3,7 +3,6 @@ package marshmallow_test
 import (
 	"fmt"
 	"github.com/perimeterx/marshmallow"
-	"sync"
 )
 
 type exampleStruct struct {
@@ -13,7 +12,7 @@ type exampleStruct struct {
 
 func ExampleUnmarshal() {
 	// enable marshmallow cache to boost up performance by reusing field type information.
-	marshmallow.EnableCache(&sync.Map{})
+	marshmallow.EnableCache()
 
 	// unmarshal with mode marshmallow.ModeFailOnFirstError and valid value
 	// this will finish unmarshalling and return a nil err
@@ -65,7 +64,7 @@ func ExampleUnmarshal() {
 
 func ExampleUnmarshalFromJSONMap() {
 	// enable marshmallow cache to boost up performance by reusing field type information.
-	marshmallow.EnableCache(&sync.Map{})
+	marshmallow.EnableCache()
 
 	// unmarshal with mode marshmallow.ModeFailOnFirstError and valid value
 	// this will finish unmarshalling and return a nil err

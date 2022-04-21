@@ -8,12 +8,11 @@ import (
 	"github.com/go-test/deep"
 	"reflect"
 	"strings"
-	"sync"
 	"testing"
 )
 
 func TestUnmarshalFromJSONMapInputVariations(t *testing.T) {
-	EnableCache(&sync.Map{})
+	EnableCache()
 	tests := []struct {
 		name                string
 		mode                Mode
