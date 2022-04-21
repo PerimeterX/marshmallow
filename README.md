@@ -1,11 +1,13 @@
 # Marshmallow
 
-![marshmallow](https://raw.githubusercontent.com/PerimeterX/marshmallow/assets/logo.png)
+<img align="right" width="350px" src="https://raw.githubusercontent.com/PerimeterX/marshmallow/assets/logo.png">
 
-Package marshmallow provides a simple API to perform flexible and performant JSON unmarshalling. Unlike other packages,
-marshmallow supports unmarshalling of some known and some unknown fields with zero performance overhead nor extra coding
-needed. While unmarshalling, marshmallow allows fully retaining the original data and access it via a typed struct and a
-dynamic map.
+Marshmallow package provides a simple API to perform flexible and performant JSON unmarshalling in Go.
+Unlike other packages, marshmallow supports unmarshalling of some known and some unknown fields with zero performance
+overhead nor extra coding needed. While unmarshalling, marshmallow allows fully retaining the original data and access
+it via a typed struct and a dynamic map.
+
+## Contents
 
 - [Marshmallow](#marshmallow)
     * [Install](#install)
