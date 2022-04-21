@@ -26,11 +26,10 @@ package main
 import (
 	"fmt"
 	"github.com/perimeterx/marshmallow"
-	"sync"
 )
 
 func main() {
-	marshmallow.EnableCache(&sync.Map{}) // this is used to boost performance, read more below
+	marshmallow.EnableCache() // this is used to boost performance, read more below
 	v := struct {
 		Foo string `json:"foo"`
 		Boo []int  `json:"boo"`
@@ -43,11 +42,11 @@ func main() {
 
 ## Performance Benchmark And Alternatives
 
-[Full Benchmark](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go)
-
 Marshmallow performs best when dealing with mixed data - when some fields are known and some are unknown.
-More info [below](when-should-i-use-marshmallow).
+More info [below](#when-should-i-use-marshmallow).
 Other solutions are available for this kind of use case, each solution is explained and documented in the link below.
+The full benchmark test can be found
+[here](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go).
 
 |Benchmark|(1)|(2)|(3)|(4)|
 |--|--|--|--|--|
@@ -58,8 +57,8 @@ Other solutions are available for this kind of use case, each solution is explai
 |[marshmallow without populating struct](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L162)|678616|1751 ns/op|608 B/op|18 allocs/op|
 
 **Marshmallow provides the best performance (up to X3 faster) while not requiring any extra coding.**
-In fact, marshmallow performs as fast as normal `json.Unmarshal` call, however, it populates both the map and the
-struct. When performing such usage a json library you actually lose all the data that doesn't get pushed into the struct.
+In fact, marshmallow performs as fast as normal `json.Unmarshal` call, however, such a call causes loss of data for all
+the fields that did not match the given struct. With marshmallow you never loose any data.
 
 |Benchmark|(1)|(2)|(3)|(4)|
 |--|--|--|--|--|
@@ -151,4 +150,7 @@ and
 Each of them can operate in three possible [modes](https://github.com/PerimeterX/marshmallow/blob/0e0218ab860be8a4b5f57f5ff239f281c250c5da/options.go#L30),
 and allow setting [skipPopulateStruct](https://github.com/PerimeterX/marshmallow/blob/0e0218ab860be8a4b5f57f5ff239f281c250c5da/options.go#L41) mode.
 
-Marshmallow also supports caching of refection information using EnableCache and EnableCustomCache.
+Marshmallow also supports caching of refection information using 
+[EnableCache](https://github.com/PerimeterX/marshmallow/blob/d3500aa5b0f330942b178b155da933c035dd3906/cache.go#L40)
+and
+[EnableCustomCache](https://github.com/PerimeterX/marshmallow/blob/d3500aa5b0f330942b178b155da933c035dd3906/cache.go#L35).
