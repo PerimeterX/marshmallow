@@ -1,5 +1,11 @@
 # Marshmallow
 
+[![Build Status](https://img.shields.io/github/checks-status/perimeterx/marshmallow/main?label=Run%20Tests&logo=github)](https://github.com/PerimeterX/marshmallow/actions?query=branch%3Amain)
+[![Go Report Card](https://goreportcard.com/badge/github.com/perimeterx/marshmallow)](https://goreportcard.com/report/github.com/perimeterx/marshmallow)
+![Manual Code Coverage](https://img.shields.io/badge/coverage-91.3%25-green)
+[![Licence](https://img.shields.io/github/license/perimeterx/marshmallow)](LICENSE)
+[![Latest Release](https://img.shields.io/github/v/release/perimeterx/marshmallow)](https://github.com/PerimeterX/marshmallow/releases)
+
 <img align="right" width="350px" src="https://raw.githubusercontent.com/PerimeterX/marshmallow/assets/logo.png">
 
 Marshmallow package provides a simple API to perform flexible and performant JSON unmarshalling in Go.
@@ -9,12 +15,11 @@ it via a typed struct and a dynamic map.
 
 ## Contents
 
-- [Marshmallow](#marshmallow)
-    * [Install](#install)
-    * [Usage](#usage)
-    * [Performance Benchmark And Alternatives](#performance-benchmark-and-alternatives)
-    * [When Should I Use Marshmallow](#when-should-i-use-marshmallow)
-    * [API](#api)
+- [Install](#install)
+- [Usage](#usage)
+- [Performance Benchmark And Alternatives](#performance-benchmark-and-alternatives)
+- [When Should I Use Marshmallow](#when-should-i-use-marshmallow)
+- [API](#api)
 
 ## Install
 
