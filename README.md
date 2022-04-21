@@ -1,5 +1,7 @@
 # Marshmallow
 
+![marshmallow](https://raw.githubusercontent.com/PerimeterX/marshmallow/assets/logo.png)
+
 Package marshmallow provides a simple API to perform flexible and performant JSON unmarshalling. Unlike other packages,
 marshmallow supports unmarshalling of some known and some unknown fields with zero performance overhead nor extra coding
 needed. While unmarshalling, marshmallow allows fully retaining the original data and access it via a typed struct and a
@@ -55,6 +57,8 @@ The full benchmark test can be found
 |[go codec](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L121)|388442|3077 ns/op|2512 B/op|37 allocs/op|
 |[marshmallow](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L16)|626168|1853 ns/op|608 B/op|18 allocs/op|
 |[marshmallow without populating struct](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L162)|678616|1751 ns/op|608 B/op|18 allocs/op|
+
+![marshmallow performance comparison](https://raw.githubusercontent.com/PerimeterX/marshmallow/e45088ca20d4ea5be4143d418d12da63a68d6dfd/performance-chart.svg)
 
 **Marshmallow provides the best performance (up to X3 faster) while not requiring any extra coding.**
 In fact, marshmallow performs as fast as normal `json.Unmarshal` call, however, such a call causes loss of data for all
