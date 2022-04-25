@@ -11,7 +11,7 @@
 
 ![Marshmallow Logo](https://raw.githubusercontent.com/PerimeterX/marshmallow/assets/logo-text.png)
 
-<img align="right" width="200" alt="marshmallow-gopher" src="https://raw.githubusercontent.com/PerimeterX/marshmallow/assets/logo-gopher.png">
+<img align="right" width="215" alt="marshmallow-gopher" src="https://raw.githubusercontent.com/PerimeterX/marshmallow/assets/logo-gopher.png">
 
 Marshmallow package provides a simple API to perform flexible and performant JSON unmarshalling in Go.
 
