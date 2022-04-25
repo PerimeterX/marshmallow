@@ -1,7 +1,5 @@
 # Marshmallow
 
-<img style="margin-bottom: -30px; margin-top: -60px;" alt="marshmallow-logo" src="https://raw.githubusercontent.com/PerimeterX/marshmallow/assets/logo-text.png">
-
 [![CodeQL Status](https://img.shields.io/github/workflow/status/perimeterx/marshmallow/CodeQL?label=CodeQL&logo=github)](https://github.com/PerimeterX/marshmallow/actions/workflows/codeql.yml?query=branch%3Amain++)
 [![Run Tests](https://img.shields.io/github/workflow/status/perimeterx/marshmallow/Go?label=Run%20Tests&logo=github)](https://github.com/PerimeterX/marshmallow/actions/workflows/go.yml?query=branch%3Amain)
 [![Dependency Review](https://img.shields.io/github/workflow/status/perimeterx/marshmallow/Dependency%20Review?label=Dependency%20Review&logo=github)](https://github.com/PerimeterX/marshmallow/actions/workflows/dependency-review.yml?query=branch%3Amain)
@@ -10,6 +8,10 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/perimeterx/marshmallow.svg)](https://pkg.go.dev/github.com/perimeterx/marshmallow)
 [![Licence](https://img.shields.io/github/license/perimeterx/marshmallow)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/perimeterx/marshmallow)](https://github.com/PerimeterX/marshmallow/releases)
+
+<div style="margin-bottom: -30px; margin-top: -60px;">
+    <img alt="marshmallow-logo" src="https://raw.githubusercontent.com/PerimeterX/marshmallow/assets/logo-text.png">
+</div>
 
 <img align="right" alt="marshmallow-gopher" src="https://raw.githubusercontent.com/PerimeterX/marshmallow/assets/logo-gopher.png">
 
