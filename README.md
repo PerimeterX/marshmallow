@@ -1,16 +1,23 @@
 # Marshmallow
 
-[![Build Status](https://img.shields.io/github/checks-status/perimeterx/marshmallow/main?label=Run%20Tests&logo=github)](https://github.com/PerimeterX/marshmallow/actions?query=branch%3Amain)
+[![CodeQL Status](https://img.shields.io/github/workflow/status/perimeterx/marshmallow/CodeQL?label=CodeQL&logo=github)](https://github.com/PerimeterX/marshmallow/actions/workflows/codeql.yml?query=branch%3Amain++)
+[![Run Tests](https://img.shields.io/github/workflow/status/perimeterx/marshmallow/Go?label=Run%20Tests&logo=github)](https://github.com/PerimeterX/marshmallow/actions/workflows/go.yml?query=branch%3Amain)
+[![Dependency Review](https://img.shields.io/github/workflow/status/perimeterx/marshmallow/Dependency%20Review?label=Dependency%20Review&logo=github)](https://github.com/PerimeterX/marshmallow/actions/workflows/dependency-review.yml?query=branch%3Amain)
 [![Go Report Card](https://goreportcard.com/badge/github.com/perimeterx/marshmallow)](https://goreportcard.com/report/github.com/perimeterx/marshmallow)
 ![Manual Code Coverage](https://img.shields.io/badge/coverage-91.3%25-green)
+[![Go Reference](https://pkg.go.dev/badge/github.com/perimeterx/marshmallow.svg)](https://pkg.go.dev/github.com/perimeterx/marshmallow)
 [![Licence](https://img.shields.io/github/license/perimeterx/marshmallow)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/perimeterx/marshmallow)](https://github.com/PerimeterX/marshmallow/releases)
 
-<img align="right" width="350px" src="https://raw.githubusercontent.com/PerimeterX/marshmallow/assets/logo.png">
+![Marshmallow Logo](https://raw.githubusercontent.com/PerimeterX/marshmallow/assets/logo-text.png)
+
+<img align="right" width="215" alt="marshmallow-gopher" src="https://raw.githubusercontent.com/PerimeterX/marshmallow/assets/logo-gopher.png">
 
 Marshmallow package provides a simple API to perform flexible and performant JSON unmarshalling in Go.
-Unlike other packages, marshmallow supports unmarshalling of some known and some unknown fields with zero performance
-overhead nor extra coding needed. While unmarshalling, marshmallow allows fully retaining the original data and access
+
+Marshmallow specializes in dealing with **unstructured struct** - when some fields are known and some aren't,
+with zero performance overhead nor extra coding needed.
+While unmarshalling, marshmallow allows fully retaining the original data and access
 it via a typed struct and a dynamic map.
 
 ## Contents
