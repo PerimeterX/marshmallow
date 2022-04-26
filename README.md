@@ -64,7 +64,7 @@ Other solutions are available for this kind of use case, each solution is explai
 The full benchmark test can be found
 [here](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go).
 
-|Benchmark|(1)|(2)|(3)|(4)|
+|Benchmark|Iterations|Time/Iteration|Bytes Allocated|Allocations|
 |--|--|--|--|--|
 |[unmarshall twice](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L40)|228693|5164 ns/op|1640 B/op|51 allocs/op|
 |[raw map](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L66)|232236|5116 ns/op|2296 B/op|53 allocs/op|
@@ -76,9 +76,9 @@ The full benchmark test can be found
 
 **Marshmallow provides the best performance (up to X3 faster) while not requiring any extra coding.**
 In fact, marshmallow performs as fast as normal `json.Unmarshal` call, however, such a call causes loss of data for all
-the fields that did not match the given struct. With marshmallow you never loose any data.
+the fields that did not match the given struct. With marshmallow you never lose any data.
 
-|Benchmark|(1)|(2)|(3)|(4)|
+|Benchmark|Iterations|Time/Iteration|Bytes Allocated|Allocations|
 |--|--|--|--|--|
 |[marshmallow](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L16)|626168|1853 ns/op|608 B/op|18 allocs/op|
 |[native library](https://github.com/PerimeterX/marshmallow/blob/8c5bba9e6dc0033f4324eca554737089a99f6e5e/benchmark_test.go#L143)|652106|1845 ns/op|304 B/op|11 allocs/op|
