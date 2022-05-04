@@ -1,5 +1,7 @@
 # Marshmallow
 
+![Marshmallow Campfire](https://raw.githubusercontent.com/PerimeterX/marshmallow/assets/campfire.png)
+
 [![CodeQL Status](https://img.shields.io/github/workflow/status/perimeterx/marshmallow/CodeQL?label=CodeQL&logo=github)](https://github.com/PerimeterX/marshmallow/actions/workflows/codeql.yml?query=branch%3Amain++)
 [![Run Tests](https://img.shields.io/github/workflow/status/perimeterx/marshmallow/Go?label=Run%20Tests&logo=github)](https://github.com/PerimeterX/marshmallow/actions/workflows/go.yml?query=branch%3Amain)
 [![Dependency Review](https://img.shields.io/github/workflow/status/perimeterx/marshmallow/Dependency%20Review?label=Dependency%20Review&logo=github)](https://github.com/PerimeterX/marshmallow/actions/workflows/dependency-review.yml?query=branch%3Amain)
@@ -9,7 +11,7 @@
 [![Licence](https://img.shields.io/github/license/perimeterx/marshmallow)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/perimeterx/marshmallow)](https://github.com/PerimeterX/marshmallow/releases)
 
-<img align="right" width="215" alt="marshmallow-gopher" src="https://raw.githubusercontent.com/PerimeterX/marshmallow/assets/logo-gopher.png">
+<img align="right" width="215" alt="marshmallow-gopher" src="https://raw.githubusercontent.com/PerimeterX/marshmallow/assets/gopher.png">
 
 Marshmallow package provides a simple API to perform flexible and performant JSON unmarshalling in Go.
 
@@ -171,4 +173,4 @@ Marshmallow also supports caching of refection information using
 and
 [EnableCustomCache](https://github.com/PerimeterX/marshmallow/blob/d3500aa5b0f330942b178b155da933c035dd3906/cache.go#L35).
 
-![Marshmallow Logo](https://raw.githubusercontent.com/PerimeterX/marshmallow/assets/logo-text.png)
+![Marshmallow Logo](https://raw.githubusercontent.com/PerimeterX/marshmallow/assets/marshmallow.png)
