@@ -11,7 +11,7 @@
 [![Licence](https://img.shields.io/github/license/perimeterx/marshmallow)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/perimeterx/marshmallow)](https://github.com/PerimeterX/marshmallow/releases)
 
-<img align="right" width="231" alt="marshmallow-gopher" src="https://raw.githubusercontent.com/PerimeterX/marshmallow/assets/gopher.png">
+<img align="right" width="200" alt="marshmallow-gopher" src="https://raw.githubusercontent.com/PerimeterX/marshmallow/assets/sticker7.png">
 
 Marshmallow package provides a simple API to perform flexible and performant JSON unmarshalling in Go.
 
@@ -172,5 +172,13 @@ Marshmallow also supports caching of refection information using
 [EnableCache](https://github.com/PerimeterX/marshmallow/blob/d3500aa5b0f330942b178b155da933c035dd3906/cache.go#L40)
 and
 [EnableCustomCache](https://github.com/PerimeterX/marshmallow/blob/d3500aa5b0f330942b178b155da933c035dd3906/cache.go#L35).
+
+# Marshmallow Logo
+
+Marshmallow logo and assets by [Adva Rom](https://www.linkedin.com/in/adva-rom-7a6738127/) are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.<br />
+
+## Contribute
+
+Any type of contribution is warmly welcome and appreciated ❤️
 
 ![Marshmallow Logo](https://raw.githubusercontent.com/PerimeterX/marshmallow/assets/marshmallow.png)
