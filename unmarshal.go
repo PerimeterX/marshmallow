@@ -79,7 +79,7 @@ func (d *decoder) populateStruct(structInstance interface{}, result map[string]i
 			value, isValidType := d.valueByReflectType(refInfo.t, false)
 			if isValidType {
 				if value != nil && doPopulate {
-					field := structValue.Field(refInfo.i)
+					field := refInfo.field(structValue)
 					assignValue(field, value)
 				}
 				if result != nil {
