@@ -2242,3 +2242,19 @@ func TestUnmarshalFromJSONMapSpecialInput(t *testing.T) {
 		})
 	}
 }
+
+func TestUnmarshalFromJSONMapEmbedding(t *testing.T) {
+	t.Run("test_embedded_values", func(t *testing.T) {
+		p := parent{}
+		result, err := UnmarshalFromJSONMap(map[string]interface{}{"field": "value"}, &p)
+		if err != nil {
+			t.Errorf("unexpected error %v", err)
+		}
+		if p.Field != "value" {
+			t.Errorf("missing embedded value in struct %+v", p)
+		}
+		if len(result) != 1 || result["field"] != "value" {
+			t.Errorf("missing embedded value in map %+v", result)
+		}
+	})
+}
