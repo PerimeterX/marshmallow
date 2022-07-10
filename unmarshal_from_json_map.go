@@ -77,7 +77,7 @@ func (m *mapDecoder) populateStruct(path []string, data map[string]interface{}, 
 			value, isValidType := m.valueByReflectType(append(path, key), inputValue, refInfo.t, false)
 			if isValidType {
 				if value != nil && doPopulate {
-					field := structValue.Field(refInfo.i)
+					field := refInfo.field(structValue)
 					assignValue(field, value)
 				}
 				if result != nil {

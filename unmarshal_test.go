@@ -2132,7 +2132,7 @@ func TestUnmarshalInputVariations(t *testing.T) {
 				}
 				structValue := reflectStructValue(actualStruct)
 				for name, refInfo := range mapStructFields(actualStruct) {
-					field := structValue.Field(refInfo.i)
+					field := refInfo.field(structValue)
 					expectedMap[name] = field.Interface()
 				}
 				if tt.expectedMapModifier != nil {
@@ -2264,6 +2264,30 @@ func TestUnmarshalSpecialInput(t *testing.T) {
 			}
 		})
 	}
+}
+
+type parent struct {
+	child
+}
+
+type child struct {
+	Field string `json:"field"`
+}
+
+func TestEmbedding(t *testing.T) {
+	t.Run("test_embedded_values", func(t *testing.T) {
+		p := parent{}
+		result, err := Unmarshal([]byte(`{"field":"value"}`), &p)
+		if err != nil {
+			t.Errorf("unexpected error %v", err)
+		}
+		if p.Field != "value" {
+			t.Errorf("missing embedded value in struct %+v", p)
+		}
+		if len(result) != 1 || result["field"] != "value" {
+			t.Errorf("missing embedded value in map %+v", result)
+		}
+	})
 }
 
 var extraData = map[string]interface{}{

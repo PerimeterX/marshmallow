@@ -13,8 +13,16 @@ import (
 var unmarshalerType = reflect.TypeOf((*json.Unmarshaler)(nil)).Elem()
 
 type reflectionInfo struct {
-	i int
-	t reflect.Type
+	path []int
+	t    reflect.Type
+}
+
+func (r reflectionInfo) field(target reflect.Value) reflect.Value {
+	current := target
+	for _, i := range r.path {
+		current = current.Field(i)
+	}
+	return current
 }
 
 func mapStructFields(target interface{}) map[string]reflectionInfo {
@@ -23,10 +31,21 @@ func mapStructFields(target interface{}) map[string]reflectionInfo {
 	if result != nil {
 		return result
 	}
+	result = make(map[string]reflectionInfo, t.NumField())
+	mapTypeFields(t, result, nil)
+	cacheStore(t, result)
+	return result
+}
+
+func mapTypeFields(t reflect.Type, result map[string]reflectionInfo, path []int) {
 	num := t.NumField()
-	result = make(map[string]reflectionInfo, num)
 	for i := 0; i < num; i++ {
 		field := t.Field(i)
+		fieldPath := append(path, i)
+		if field.Anonymous && field.Type.Kind() == reflect.Struct {
+			mapTypeFields(field.Type, result, fieldPath)
+			continue
+		}
 		name := field.Tag.Get("json")
 		if name == "" || name == "-" {
 			continue
@@ -35,12 +54,10 @@ func mapStructFields(target interface{}) map[string]reflectionInfo {
 			name = name[:index]
 		}
 		result[name] = reflectionInfo{
-			i: i,
-			t: field.Type,
+			path: fieldPath,
+			t:    field.Type,
 		}
 	}
-	cacheStore(t, result)
-	return result
 }
 
 func reflectStructValue(target interface{}) reflect.Value {
