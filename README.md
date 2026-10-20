@@ -1,5 +1,20 @@
 # Marshmallow
 
+> [!WARNING]
+> **This repository has moved to [github.com/avivcarmis/marshmallow](https://github.com/avivcarmis/marshmallow).**
+>
+> This repository is no longer maintained. All development, issues, pull requests and releases
+> now happen in the new repository. To migrate, update your imports and dependencies:
+>
+> ```diff
+> - import "github.com/perimeterx/marshmallow"
+> + import "github.com/avivcarmis/marshmallow"
+> ```
+>
+> ```shell
+> go get -u github.com/avivcarmis/marshmallow
+> ```
+
 ![Marshmallow Campfire](https://raw.githubusercontent.com/PerimeterX/marshmallow/assets/campfire.png)
 
 [![CodeQL Status](https://img.shields.io/github/actions/workflow/status/perimeterx/marshmallow/codeql.yml?branch=main&logo=github&label=CodeQL)](https://github.com/PerimeterX/marshmallow/actions/workflows/codeql.yml?query=branch%3Amain++)
